@@ -43,6 +43,56 @@ mack_creek_lengths <- mack_creek_vertebrates %>%
   summarize(mean_length_cm = mean(length1, na.rm = TRUE),
             sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
   ungroup()
+
+```
+
+```{r}
+# Reprex for github
+library(reprex)
+library(datapasta)
+
+datapasta::df_paste(head(mack_creek_vertebrates, 5)[, c("LENGTH1", "SPECIES")])
+
+fish_data <- data.frame(
+  stringsAsFactors = FALSE,
+           LENGTH1 = c(58, 61, 89, 58, 93),
+           SPECIES = c("ONCL", "ONCL", "ONCL", "ONCL", "ONCL"))
+mutate(across(where(is.character, tolower))) %>% 
+  drop_na(species) %>% 
+  group_by(species) %>% 
+  summarize(mean_length_cm = mean(length1, na.rm = TRUE),
+            sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
+  ungroup()
+
+```
+
+```{r}
+# fixing the error - close the parenthesis on is.character
+
+datapasta::df_paste(head(mack_creek_vertebrates, 5)[, c("LENGTH1", "SPECIES")])
+
+fish_data <- data.frame(
+  stringsAsFactors = FALSE,
+           LENGTH1 = c(58, 61, 89, 58, 93),
+           SPECIES = c("ONCL", "ONCL", "ONCL", "ONCL", "ONCL"))
+mutate(across(where(is.character), tolower)) %>% 
+  drop_na(species) %>% 
+  group_by(species) %>% 
+  summarize(mean_length_cm = mean(length1, na.rm = TRUE),
+            sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
+  ungroup()
+
+
+```
+
+```{r}
+mack_creek_lengths <- fish_data %>% 
+  mutate(across(where(is.character, tolower))) %>% 
+  drop_na(species) %>% 
+  group_by(species) %>% 
+  summarize(mean_length_cm = mean(length1, na.rm = TRUE),
+            sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
+  ungroup()
 ```
 
 ### reprex 2
@@ -59,6 +109,34 @@ mack_creek_vertebrates %>%
          theme_minimal() +
          labs(x = "Cutthroat trout length (cm)",
               y = "Weight (g)")
+```
+
+```{r}
+# reprex for github
+datapasta::df_paste(head(mack_creek_vertebrates, 5)[, c("LENGTH1", "WEIGHT")])
+
+
+
+fishplot_data <-data.frame(
+     LENGTH1 = c(58, 61, 89, 58, 93),
+      WEIGHT = c(1.75, 1.95, 5.6, 2.15, 6.9))
+ggplot(aes(x = length1, y = weight)) +
+         geom_point(aes(shape = 12), color = "purple") +
+         theme_minimal() +
+         labs(x = "Cutthroat trout length (cm)",
+              y = "Weight (g)")
+
+```
+
+```{r}
+# fixing the error = removed aes
+
+  ggplot(data = fishplot_data, aes(x = LENGTH1, y = WEIGHT)) +
+         geom_point(shape = 12, color = "purple") +
+         theme_minimal() +
+         labs(x = "Cutthroat trout length (cm)",
+              y = "Weight (g)")
+
 ```
 
 ## End
